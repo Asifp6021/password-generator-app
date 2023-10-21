@@ -16,7 +16,10 @@ Character Cheatsheet -> https://www.petefreitag.com/cheatsheets/ascii-codes/
 */
 const lowerCaseCharCodes = arrayLowToHigh(97, 122);
 const numberCharCodes = arrayLowToHigh(48, 57);
-const symbolCharCodes = arrayLowToHigh(33, 47).concat(58, 64).concat(91, 96).concat(123, 126);
+const symbolCharCodes = arrayLowToHigh(33, 47)
+	.concat(58, 64)
+	.concat(91, 96)
+	.concat(123, 126);
 const upperCaseCharCodes = arrayLowToHigh(65, 90);
 
 //Synchronizing Range and Number Inputs
@@ -47,8 +50,26 @@ formContainer.addEventListener('submit', function (e) {
 	);
 });
 
-// looping over char code
+//Password generator function
+function generatePassword(
+	characterAmount,
+	includeNumbers,
+	includeSymbols,
+	includeUpperCase
+) {
+	// default lowercase
+	let charCodes = lowerCaseCharCodes;
 
+	// if user want to include other options.
+
+	if (includeNumbers) charCodes = charCodes.concat(numberCharCodes);
+
+	if (includeSymbols) charCodes = charCodes.concat(symbolCharCodes);
+
+	if (includeUpperCase) charCodes = charCodes.concat(upperCaseCharCodes);
+}
+
+// Looping over char code
 function arrayLowToHigh(low, high) {
 	let array = [];
 
