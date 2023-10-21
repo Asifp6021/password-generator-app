@@ -11,6 +11,8 @@ const numbersEl = document.querySelector('#numbers');
 const symbolsEl = document.querySelector('#symbols');
 const upperCaseEl = document.querySelector('#uppercase');
 
+const passwordDisplay = document.querySelector('#password-display');
+
 /* Inserting the Character Codes into arrays
 Character Cheatsheet -> https://www.petefreitag.com/cheatsheets/ascii-codes/
 */
@@ -28,9 +30,9 @@ rangeCharacters.addEventListener('input', syncCharAmount);
 numberCharacters.addEventListener('input', syncCharAmount);
 
 function syncCharAmount(e) {
-	const ValueAmount = e.target.value;
-	rangeCharacters.value = ValueAmount;
-	numberCharacters.value = ValueAmount;
+	const valueAmount = e.target.value;
+	rangeCharacters.value = valueAmount;
+	numberCharacters.value = valueAmount;
 }
 
 //Generating the password when the form is submitted
@@ -38,9 +40,10 @@ formContainer.addEventListener('submit', function (e) {
 	e.preventDefault();
 
 	const characterAmount = numberCharacters.value;
-	const includeUpperCase = upperCaseEl.value;
-	const includeNumbers = numbersEl.value;
-	const includeSymbols = symbolsEl.value;
+	const includeUpperCase = upperCaseEl.checked;
+
+	const includeNumbers = numbersEl.checked;
+	const includeSymbols = symbolsEl.checked;
 
 	const password = generatePassword(
 		characterAmount,
@@ -48,25 +51,35 @@ formContainer.addEventListener('submit', function (e) {
 		includeNumbers,
 		includeSymbols
 	);
+
+	passwordDisplay.innerText = password;
 });
 
 //Password generator function
 function generatePassword(
 	characterAmount,
+	includeUpperCase,
 	includeNumbers,
-	includeSymbols,
-	includeUpperCase
+	includeSymbols
 ) {
 	// default lowercase
 	let charCodes = lowerCaseCharCodes;
 
 	// if user want to include other options.
-
 	if (includeNumbers) charCodes = charCodes.concat(numberCharCodes);
-
 	if (includeSymbols) charCodes = charCodes.concat(symbolCharCodes);
-
 	if (includeUpperCase) charCodes = charCodes.concat(upperCaseCharCodes);
+
+	// loop to generate random pass and matching range
+	const passwordCharacters = [];
+
+	for (let i = 0; i < characterAmount; i++) {
+		let characterCodes =
+			charCodes[Math.floor(Math.random() * charCodes.length)];
+		passwordCharacters.push(String.fromCharCode(characterCodes));
+	}
+
+	return passwordCharacters.join('');
 }
 
 // Looping over char code
